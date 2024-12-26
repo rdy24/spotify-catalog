@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    container_name: local-postgres-fast-campus
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: spotify_catalog_db
+    volumes:
+      - "D:\\study\\golang\\fastcampus\\golang 6 project\\docker_postgres/db:/var/lib/postgresql/data"
