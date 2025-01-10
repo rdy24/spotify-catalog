@@ -4,3 +4,8 @@ service:
 
 database:
   dataSourceName: "postgres://postgres:password@localhost:5432/spotify_catalog_db?sslmode=disable"
+
+spotifyConfig:
+  clientID: "secret"
+  clientSecret: "secret"
+  redirectURI: "http://localhost:8080/callback"
