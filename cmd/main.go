@@ -9,8 +9,10 @@ import (
 	membershipsHandler "github.com/rdy24/spotify-catalog/internal/handler/memberships"
 	tracksHandler "github.com/rdy24/spotify-catalog/internal/handler/tracks"
 	"github.com/rdy24/spotify-catalog/internal/models/memberships"
+	"github.com/rdy24/spotify-catalog/internal/models/trackactivities"
 	membershipRepository "github.com/rdy24/spotify-catalog/internal/repository/memberships"
 	"github.com/rdy24/spotify-catalog/internal/repository/spotify"
+	trackactivitiesRepo "github.com/rdy24/spotify-catalog/internal/repository/trackactivities"
 	membershipSvc "github.com/rdy24/spotify-catalog/internal/service/memberships"
 	"github.com/rdy24/spotify-catalog/internal/service/tracks"
 	"github.com/rdy24/spotify-catalog/pkg/httpclient"
@@ -37,6 +39,7 @@ func main() {
 	db, err := internalsql.Connect(cfg.Database.DataSourceName)
 
 	db.AutoMigrate(&memberships.User{})
+	db.AutoMigrate(&trackactivities.TrackActivity{})
 
 	r := gin.Default()
 
@@ -44,9 +47,10 @@ func main() {
 	spotifyOutbound := spotify.NewSpotifyOutBound(cfg, httpClient)
 
 	membershipRepo := membershipRepository.NewRepository(db)
+	trackActivitiesRepo := trackactivitiesRepo.NewRepository(db)
 
 	membershipService := membershipSvc.NewService(cfg, membershipRepo)
-	trackSvc := tracks.NewService(spotifyOutbound)
+	trackSvc := tracks.NewService(spotifyOutbound, trackActivitiesRepo)
 
 	membershipHandler := membershipsHandler.NewHandler(r, membershipService)
 

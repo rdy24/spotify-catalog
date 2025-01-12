@@ -5,11 +5,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rdy24/spotify-catalog/internal/models/spotify"
+	"github.com/rdy24/spotify-catalog/internal/models/trackactivities"
 )
 
 //go:generate mockgen -source=handler.go -destination=handler_mock_test.go -package=tracks
 type service interface {
 	Search(ctx context.Context, query string, pageSize, pageIndex int) (*spotify.SearchResponse, error)
+	UpsertTrackActivities(ctx context.Context, userID uint, request trackactivities.TrackActivityRequest) error
+	GetRecommendation(ctx context.Context, userID uint, limit int, trackID string) (*spotify.RecommendationResponse, error)
 }
 
 type Handler struct {
