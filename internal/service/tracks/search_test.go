@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/rdy24/spotify-catalog/internal/models/spotify"
+	"github.com/rdy24/spotify-catalog/internal/models/trackactivities"
 	spotifyRepo "github.com/rdy24/spotify-catalog/internal/repository/spotify"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
@@ -83,7 +84,7 @@ func Test_service_Search(t *testing.T) {
 								Album: spotifyRepo.SpotifyAlbumObject{
 									AlbumType:   "album",
 									TotalTracks: 22,
-									Image: []spotifyRepo.SpotifyAlbumImages{
+									Images: []spotifyRepo.SpotifyAlbumImage{
 										{
 											URL: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
 										},
@@ -96,7 +97,7 @@ func Test_service_Search(t *testing.T) {
 									},
 									Name: "Bohemian Rhapsody (The Original Soundtrack)",
 								},
-								Artist: []spotifyRepo.SpotifyArtistObject{
+								Artists: []spotifyRepo.SpotifyArtistObject{
 									{
 										Href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
 										Name: "Queen",
@@ -111,7 +112,7 @@ func Test_service_Search(t *testing.T) {
 								Album: spotifyRepo.SpotifyAlbumObject{
 									AlbumType:   "album",
 									TotalTracks: 12,
-									Image: []spotifyRepo.SpotifyAlbumImages{
+									Images: []spotifyRepo.SpotifyAlbumImage{
 										{
 											URL: "https://i.scdn.co/image/ab67616d0000b273e319baafd16e84f0408af2a0",
 										},
@@ -124,7 +125,7 @@ func Test_service_Search(t *testing.T) {
 									},
 									Name: "A Night At The Opera (2011 Remaster)",
 								},
-								Artist: []spotifyRepo.SpotifyArtistObject{
+								Artists: []spotifyRepo.SpotifyArtistObject{
 									{
 										Href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
 										Name: "Queen",
