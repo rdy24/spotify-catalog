@@ -24,9 +24,9 @@ type service struct {
 	trackActivitiesRepo trackActivitiesRepository
 }
 
-func NewService(spotifyOutbound SpotifyOutbound, trackActivityRepo trackActivitiesRepository) *service {
+func NewService(spotifyOutbound SpotifyOutbound, trackActivitiesRepo trackActivitiesRepository) *service {
 	return &service{
 		spotifyOutbound:     spotifyOutbound,
-		trackActivitiesRepo: trackActivityRepo,
+		trackActivitiesRepo: trackActivitiesRepo,
 	}
 }
