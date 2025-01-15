@@ -58,7 +58,7 @@ func TestHandler_Search(t *testing.T) {
 			},
 			wantErr: false,
 			mockFn: func() {
-				mockSvc.EXPECT().Search(gomock.Any(), "bohemian rhapsody", 10, 1).Return(&spotify.SearchResponse{
+				mockSvc.EXPECT().Search(gomock.Any(), "bohemian rhapsody", 10, 1, uint(1)).Return(&spotify.SearchResponse{
 					Limit:  10,
 					Offset: 0,
 					Items: []spotify.SpotifyTrackObject{
@@ -94,7 +94,7 @@ func TestHandler_Search(t *testing.T) {
 			expectedBody:       spotify.SearchResponse{},
 			wantErr:            true,
 			mockFn: func() {
-				mockSvc.EXPECT().Search(gomock.Any(), "bohemian rhapsody", 10, 1).Return(nil, assert.AnError)
+				mockSvc.EXPECT().Search(gomock.Any(), "bohemian rhapsody", 10, 1, uint(1)).Return(nil, assert.AnError)
 			},
 		},
 	}

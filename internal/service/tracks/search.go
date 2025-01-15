@@ -4,11 +4,12 @@ import (
 	"context"
 
 	"github.com/rdy24/spotify-catalog/internal/models/spotify"
+	"github.com/rdy24/spotify-catalog/internal/models/trackactivities"
 	spotifyRepository "github.com/rdy24/spotify-catalog/internal/repository/spotify"
 	"github.com/rs/zerolog/log"
 )
 
-func (s *service) Search(ctx context.Context, query string, pageSize, pageIndex int) (*spotify.SearchResponse, error) {
+func (s *service) Search(ctx context.Context, query string, pageSize, pageIndex int, userID uint) (*spotify.SearchResponse, error) {
 	limit := pageSize
 	offset := (pageIndex - 1) * pageSize
 
@@ -19,11 +20,24 @@ func (s *service) Search(ctx context.Context, query string, pageSize, pageIndex 
 		return nil, err
 	}
 
-	return modelToResponse(trackDetails), nil
+	trackIDs := make([]string, len(trackDetails.Tracks.Items))
+
+	for idx, track := range trackDetails.Tracks.Items {
+		trackIDs[idx] = track.ID
+	}
+
+	trackActivities, err := s.trackActivitiesRepo.GetBulkSpotifyIDs(ctx, userID, trackIDs)
+
+	if err != nil {
+		log.Error().Err(err).Msg("failed to get track activities")
+		return nil, err
+	}
+
+	return modelToResponse(trackDetails, trackActivities), nil
 
 }
 
-func modelToResponse(data *spotifyRepository.SpotifySearchResponse) *spotify.SearchResponse {
+func modelToResponse(data *spotifyRepository.SpotifySearchResponse, mapTrackActivities map[string]trackactivities.TrackActivity) *spotify.SearchResponse {
 	if data == nil {
 		return nil
 	}
@@ -53,6 +67,7 @@ func modelToResponse(data *spotifyRepository.SpotifySearchResponse) *spotify.Sea
 			Explicit:         item.Explicit,
 			ID:               item.ID,
 			Name:             item.Name,
+			IsLiked:          mapTrackActivities[item.ID].IsLiked,
 		})
 	}
 
